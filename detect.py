@@ -49,14 +49,46 @@ for url in urls:
         # if there is a diff, append it to the changes file
         if os.path.exists(filename+".diff") and os.path.getsize(filename+".diff") > 0:
 
-            print("Found changes in " + url)
+            with open(filename+".diff", 'r') as diff_file:
 
-            with open(changes_file, 'a') as f:
+                content=diff_file.read()
 
-                f.write(f'<h2><a href="{url}">{url}</a></h2>\n')
-                with open(filename+".diff", 'r') as diff_file:
-                    f.write(diff_file.read())
-                f.write('<hr><br>\n')
+                # verify content actually has html content, not just
+                # property changes or id changes in div metadata and such
+                if (
+                    "</div>" in content
+                    or
+                    "<p>" in content
+                    or
+                    "<h1>" in content
+                    or
+                    "<h2>" in content
+                    or
+                    "<h3>" in content
+                    or
+                    "<h4>" in content
+                    or
+                    "<h5>" in content
+                    or
+                    "<h6>" in content
+                    or
+                    "<a" in content
+                    or
+                    "<img" in content
+                    or
+                    "<span" in content
+                    or
+                    "<li" in content
+                    ):
+
+
+                    print("Found changes in " + url)
+
+                    with open(changes_file, 'a') as f:
+
+                        f.write(f'<h2><a href="{url}">{url}</a></h2>\n')
+                        f.write(content)
+                        f.write('<hr><br>\n')
 
         if os.path.exists(filename+".diff"):
             os.remove(filename+".diff")
