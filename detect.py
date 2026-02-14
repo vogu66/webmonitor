@@ -44,7 +44,7 @@ for url in urls:
     # check if the file exists
     if os.path.exists(filename):
         # if it exists, compare the new file with the old file
-        os.system(f"diff --new-line-format='%L' --old-line-format='' --unchanged-line-format='' {filename} {filename+'.new'} > {filename+'.diff'}")
+        os.system(f"diff --new-line-format='%L' --old-line-format='' --unchanged-line-format='' --ignore-all-space {filename} {filename+'.new'} > {filename+'.diff'}")
 
         # if there is a diff, append it to the changes file
         if os.path.exists(filename+".diff") and os.path.getsize(filename+".diff") > 0:
@@ -94,11 +94,7 @@ for url in urls:
             os.remove(filename+".diff")
 
     # move the new file to the old file
-    # print(os.listdir(html_folder))
-    # os.system("cat " + filename + ".new")
-    # os.remove(filename) if os.path.exists(filename) else None
     os.rename(filename+".new", filename)
-    # print(os.listdir(html_folder))
 
 
 # make that into an html file by concatenation
