@@ -81,8 +81,11 @@ for url in urls:
                     "<li" in content
                     ):
 
-
                     print("Found changes in " + url)
+
+                    # replace any relative links in the content with absolute links
+                    base_url = url.split('/')[0] + '//' + url.split('/')[2]
+                    content = content.replace('href="/', f'href="{base_url}/')
 
                     with open(changes_file, 'a') as f:
 
