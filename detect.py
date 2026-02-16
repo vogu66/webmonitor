@@ -53,6 +53,19 @@ for url in urls:
 
                 content=diff_file.read()
 
+                # remove any display=None line
+                for line in content.splitlines():
+                    if 'display:none' in line:
+                        content = content.replace(line, '')
+                        # print("Removed display:none line from diff content")
+                        # print(line)
+                # remove body lines
+                for line in content.splitlines():
+                    if '<body' in line or '</body>' in line:
+                        content = content.replace(line, '')
+                        # print("Removed body line from diff content")
+                        # print(line)
+
                 # verify content actually has html content, not just
                 # property changes or id changes in div metadata and such
                 if (
@@ -78,10 +91,15 @@ for url in urls:
                     or
                     "<span" in content
                     or
-                    "<li" in content
+                    "<li " in content
+                    or
+                    "<li>" in content
                     ):
 
                     print("Found changes in " + url)
+                    print(content)
+                    print()
+                    print('*'*10)
 
                     # replace any relative links in the content with absolute links
                     base_url = url.split('/')[0] + '//' + url.split('/')[2]
