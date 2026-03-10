@@ -48,10 +48,7 @@ for url in urls:
         continue
 
     # filter out the html header, any script, css, and js files
-    os.system(f"sed -i '/<head>/,/<\\/head>/d' {filename+'.new'}")
-    os.system(f"sed -i '/<script/,/<\\/script>/d' {filename+'.new'}")
-    os.system(f"sed -i '/<link/,/\\/link>/d' {filename+'.new'}")
-    os.system(f"sed -i '/<style/,/<\\/style>/d' {filename+'.new'}")
+    os.system(f"sed -i '/<head>/,/<\\/head>/d; /<script/,/<\\/script>/d; /<link/,/<\\/link>/d; /<style/,/<\\/style>/d' {filename+'.new'}")
 
     # check if the file exists
     if os.path.exists(filename):
