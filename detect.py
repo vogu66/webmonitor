@@ -41,6 +41,18 @@ for url in urls:
     # fetch the content
     os.system(f'curl -s {url} -o {filename+".new"}')
 
+    # check the file size, if it's 0, skip it
+    if os.path.getsize(filename+".new") == 0:
+        print(f"Failed to fetch {url}, skipping...")
+        os.remove(filename+".new")
+        continue
+
+    # filter out the html header, any script, css, and js files
+    os.system(f"sed -i '/<head>/,/<\\/head>/d' {filename+'.new'}")
+    os.system(f"sed -i '/<script/,/<\\/script>/d' {filename+'.new'}")
+    os.system(f"sed -i '/<link/,/\\/link>/d' {filename+'.new'}")
+    os.system(f"sed -i '/<style/,/<\\/style>/d' {filename+'.new'}")
+
     # check if the file exists
     if os.path.exists(filename):
         # if it exists, compare the new file with the old file
