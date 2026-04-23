@@ -34,12 +34,12 @@ with open(urls_file, 'r') as f:
 for url in urls:
     # create a filename from the url
     filename = os.path.join(html_folder,
-        url.replace('https://', '').replace('http://', '').replace('/', '_') + '.html')
-
+        url.replace('https://', '').replace('http://', '').replace('/', '_').replace('&','').replace('=','-').replace('?','')
+        + '.html')
     # print(f'Checking {url}...')
 
     # fetch the content
-    os.system(f'curl -s {url} -o {filename+".new"}')
+    os.system(f'curl -s "{url}" -o "{filename+".new"}"')
 
     # check the file size, if it's 0, skip it
     if os.path.getsize(filename+".new") == 0:
