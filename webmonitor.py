@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Purpose: monitor added content in a bunch of web pages and store changes in a file
 """
@@ -18,12 +19,21 @@ import os
 urls_file = 'urls.txt'
 html_folder = 'html'
 changes_file = 'changes.xml'
-html_pre = "html_pre.xml"
-html_post = "html_post.xml"
+html_pre = os.path.join(os.path.dirname(os.path.realpath(__file__)),"html_pre.xml")
+html_post = os.path.join(os.path.dirname(os.path.realpath(__file__)),"html_post.xml")
 html_file = 'changes.html'
 
+# ensure urls file exists
+if not os.path.exists(urls_file):
+    response = input(f"{urls_file} not found, creating an empty file? (Y|n): ").strip().lower()
+    if response == 'y':
+        os.system(f'touch {urls_file}')
+        print("Please add urls to monitor in this file.")
+    else:
+        print("Exiting...")
+        exit(1)
+
 # touch all the files to make sure they exist
-os.system(f'touch {urls_file}')
 os.makedirs(html_folder, exist_ok=True)
 os.system(f'touch {changes_file}')
 
