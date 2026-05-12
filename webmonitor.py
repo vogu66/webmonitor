@@ -44,12 +44,20 @@ with open(urls_file, 'r') as f:
 for url in urls:
     # create a filename from the url
     filename = os.path.join(html_folder,
-        url.replace('https://', '').replace('http://', '').replace('/', '_').replace('&','').replace('=','-').replace('?','')
+        url.replace('https://', '').replace('http://', '').replace('/', '_').replace('&','').replace('=','-').replace('?','').replace(',','').replace('+','')
         + '.html')
+    # need to reduce file name size for the OS
+    if len(filename) > 100:
+        # keep the end and not the beginning to avoid conflicts in the important
+        # part of the url, which is the query at the end when there is one
+        filename = os.path.join(html_folder, filename[100:])
     # print(f'Checking {url}...')
 
     # fetch the content
-    os.system(f'curl -s "{url}" -o "{filename+".new"}"')
+    fetch_command = f'curl -k -s "{url}" -o "{filename+".new"}"'
+    print(fetch_command)
+    print('-'*10)
+    os.system(fetch_command)
 
     # check the file size, if it's 0, skip it
     if os.path.getsize(filename+".new") == 0:
