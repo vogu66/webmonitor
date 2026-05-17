@@ -50,7 +50,7 @@ for url in urls:
     if len(filename) > 100:
         # keep the end and not the beginning to avoid conflicts in the important
         # part of the url, which is the query at the end when there is one
-        filename = os.path.join(html_folder, filename[100:])
+        filename = os.path.join(html_folder, filename.split('/')[-1][-100:])
     # print(f'Checking {url}...')
 
     # fetch the content
