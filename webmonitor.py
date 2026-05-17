@@ -76,7 +76,7 @@ for url in urls:
         # if there is a diff, append it to the changes file
         if os.path.exists(filename+".diff") and os.path.getsize(filename+".diff") > 0:
 
-            with open(filename+".diff", 'r') as diff_file:
+            with open(filename+".diff", 'r', errors="ignore") as diff_file:
 
                 content=diff_file.read()
 
